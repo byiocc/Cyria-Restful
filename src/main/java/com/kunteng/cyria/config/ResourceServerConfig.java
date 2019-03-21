@@ -28,16 +28,15 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-                http
-                .requestMatchers()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/login/**", "/api-docs/**").permitAll()
-                .antMatchers("/springjwt/**").authenticated()
-                .antMatchers("/cyria/**" ).authenticated()
-                .and()
-                .exceptionHandling().accessDeniedHandler(new GoAccessDeniedHandler())
-		        .and()
-		        .exceptionHandling().authenticationEntryPoint(new GoAuthenticationEntryPoint());;
+    	http
+            .requestMatchers()
+            .and()
+            .authorizeRequests() 
+            .antMatchers("/api/v1/oauth/**").permitAll()
+            .antMatchers("/api/v1/**").authenticated()
+            .and()
+            .exceptionHandling().accessDeniedHandler(new GoAccessDeniedHandler())
+	        .and()
+	        .exceptionHandling().authenticationEntryPoint(new GoAuthenticationEntryPoint());
     }
 }
