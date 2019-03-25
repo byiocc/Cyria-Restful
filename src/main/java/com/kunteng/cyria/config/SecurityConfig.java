@@ -15,9 +15,11 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.kunteng.cyria.component.GoAccessDeniedHandler;
 import com.kunteng.cyria.component.GoAuthenticationEntryPoint;
+import com.kunteng.cyria.util.JWTLoginFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -54,8 +56,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		        .realmName(securityRealm)
 		        .and()
 		        .csrf()
-		        .disable();		   
-
+		        .disable();
+		http
+		.addFilterBefore(
+						new JWTLoginFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Bean
@@ -78,4 +82,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		defaultTokenServices.setSupportRefreshToken(true);
 		return defaultTokenServices;
 	}
+	
 }
