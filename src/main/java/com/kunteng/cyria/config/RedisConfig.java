@@ -59,13 +59,13 @@ public class RedisConfig extends CachingConfigurerSupport{
 	}
 
 	@Bean
-	public CacheManager cacheManager( RedisConnectionFactory factory) {
+	public CacheManager cacheManager(RedisConnectionFactory factory) {
 		RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(timeout));
 		return RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(factory)).cacheDefaults(redisCacheConfiguration).build();
 	}
 
 	@Bean
-	pulic RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
+	public RedisTemplate<String,String> redisTemplate(RedisConnectionFactory factory) {
 		StringRedisTemplate template = new StringRedisTemplate(factory);
 		setSerializer(template);
 		template.afterPropertiesSet();
@@ -73,7 +73,7 @@ public class RedisConfig extends CachingConfigurerSupport{
 	}
 
 	private void setSerializer(StringRedisTemplate template) {
-		@SuppressWarning({"rawtypes","unchecked"})
+		@SuppressWarnings({"rawtypes","unchecked"})
 		Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
 		ObjectMapper om = new ObjectMapper();
 		om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
